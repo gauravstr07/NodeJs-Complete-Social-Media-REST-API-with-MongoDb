@@ -4,19 +4,19 @@ const UserSchema = new mongoose.Schema(
   {
     username: {
       type: String,
-      require: [true, ["Username is required"]],
-      min: [3, "Username have at lease more then 3 charactors"],
-      mix: [20, "Username have min 20 charactors"],
+      required: true,
+      min: 3,
+      mix: 20,
       unique: true,
     },
     email: {
       type: String,
-      require: [true, ["Email is required"]],
+      required: [true, ["Email is required"]],
       unique: true,
     },
     password: {
       type: String,
-      require: true,
+      required: true,
       min: 6,
     },
     profilePicture: {

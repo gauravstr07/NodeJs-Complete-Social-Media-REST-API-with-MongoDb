@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/gauravstr07/NodeJs-Complete-Social-Media-REST-API-with-MongoDb#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "helmet": "^6.0.1",
