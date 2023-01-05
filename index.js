@@ -5,6 +5,10 @@ const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const helmet = require("helmet");
 
+/** importing routes */
+const userRoutes = require("./routes/users");
+const authRoutes = require("./routes/auth");
+
 dotenv.config();
 
 /** congifration to database */
@@ -29,6 +33,10 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
+
+/** defining routes middleware */
+app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({
