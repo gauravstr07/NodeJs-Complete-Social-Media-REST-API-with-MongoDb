@@ -9,6 +9,8 @@ const helmet = require("helmet");
 const userRoutes = require("./routes/users");
 const authRoutes = require("./routes/auth");
 
+const postRoutes = require("./routes/posts");
+
 dotenv.config();
 
 /** congifration to database */
@@ -37,6 +39,8 @@ app.use(morgan("common"));
 /** defining routes middleware */
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+
+app.use("/api/post", postRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({

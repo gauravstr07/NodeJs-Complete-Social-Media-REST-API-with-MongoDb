@@ -54,14 +54,59 @@ router.delete("/:id", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
-    const {password, updatedAt, ...others} = user._doc
+    const { password, updatedAt, ...others } = user._doc;
     res.status(200).json(others);
   } catch (error) {
     res.status(500).json({ error });
   }
 });
 
-/** follow a user */
+/** follow a user  ---> http://localhost:5000/api/user/userId/follow */
+router.put("/:id/follow", async (req, res) => {
+  if (req.body.userId !== req.params.id) {
+    try {
+      const user = await User.findById(req.params.id);
+      const curruntUser = await User.findById(req.body.userId);
 
-/** unfollow a user */
+      if (!user.followers.includes(req.body.userId)) {
+        await user.updateOne({ $pull: { followers: req.body.userId } });
+        await curruntUser.updateOne({ $pull: { following: req.params.id } });
+        res.status(200).json({
+          follow: `${user.username} has been followed`,
+        });
+      } else {
+        res.status(403).json("you already follow this user");
+      }
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  } else {
+    res.status(403).json("you can't follow yourself");
+  }
+});
+
+/** follow a user  ---> http://localhost:5000/api/user/userId/unfollow */
+router.put("/:id/unfollow", async (req, res) => {
+  if (req.body.userId !== req.params.id) {
+    try {
+      const user = await User.findById(req.params.id);
+      const curruntUser = await User.findById(req.body.userId);
+
+      if (user.followers.includes(req.body.userId)) {
+        await user.updateOne({ $pull: { followers: req.body.userId } });
+        await curruntUser.updateOne({ $pull: { following: req.params.id } });
+        res.status(200).json({
+          follow: `${user.username} has been unfollowed`,
+        });
+      } else {
+        res.status(403).json("you already unfollow this user");
+      }
+    } catch (error) {
+      res.status(500).json({ error });
+    }
+  } else {
+    res.status(403).json("you can't follow yourself");
+  }
+});
+
 module.exports = router;
